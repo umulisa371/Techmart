@@ -13,8 +13,9 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(express.json());
+app.options("*", cors());
 
+app.use(express.json());
 // Routes
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/products");
