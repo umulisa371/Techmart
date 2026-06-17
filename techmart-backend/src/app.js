@@ -20,7 +20,7 @@ app.use(express.json());
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
-const orderRoutes = require("./routes/orders.user");
+
 const userRoutes = require("./routes/users");
 const couponRoutes = require("./routes/coupons");
 const contactRoutes = require("./routes/contact");
@@ -41,7 +41,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/coupons", couponRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payment", paymentRoutes);
-app.use("/api/orders", require("./routes/orders.user"));
+
 app.use("/api/admin", adminRoutes);
 // Global error handler
 app.use((err, req, res, next) => {

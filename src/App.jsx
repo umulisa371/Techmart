@@ -624,7 +624,7 @@ function CartDrawer({ open, cart, onClose, onRemove, onQty, onClearCart }) {
   const handlePayment = async () => {
     console.log("CART =", cart);
   try {
-    const res = await fetch("http://localhost:5000/api/payment", {
+    const res = await fetch("https://techmart-hngi.onrender.com/api/payment", {
       method: "POST",
      headers: {
   "Content-Type": "application/json",
@@ -663,7 +663,7 @@ const handleOrder = async () => {
   if (!payOk) return;
 
   try {
-    const res = await fetch("http://localhost:5000/api/orders", {
+    const res = await fetch("https://techmart-hngi.onrender.com/api/orders", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1119,18 +1119,65 @@ function AuthPage({ onAuth, onClose }) {
   const [mode, setMode] = useState("login");
   const [form, setForm] = useState({ name:"", email:"", password:"", confirm:"" });
   const [err, setErr] = useState("");
-  const set = (k,v) => setForm(p=>({...p,[k]:v}));
-  const submit = () => {
-    if (!form.email || !form.password) { setErr("Please fill in all required fields."); return; }
-    if (mode==="register") {
-      if (!form.name) { setErr("Name is required."); return; }
-      if (form.password !== form.confirm) { setErr("Passwords do not match."); return; }
-      if (form.password.length < 6) { setErr("Min 6 characters for password."); return; }
+
+  const set = (k,v) => setForm(p => ({ ...p, [k]: v }));
+
+  // ✅ PUT THIS FIRST
+  const handleAuth = async (data) => {
+    try {
+      const url = data.isLogin
+        ? "https://techmart-hngi.onrender.com/api/auth/login"
+        : "https://techmart-hngi.onrender.com/api/auth/register";
+
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const text = await res.text();
+
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch {
+        console.log("NOT JSON RESPONSE:", text);
+        throw new Error("Server returned HTML instead of JSON");
+      }
+
+      if (!res.ok) {
+        throw new Error(result.error || "Auth failed");
+      }
+
+      console.log("AUTH SUCCESS:", result);
+      setErr("");
+      return result;
+
+    } catch (err) {
+      console.error("AUTH ERROR:", err.message);
+      setErr(err.message);
     }
-   onAuth({ name: form.name, email: form.email, password: form.password, isLogin: mode === "login" });
   };
-  const inp = { width:"100%", background:C.surface, border:`1px solid ${C.border}`, borderRadius:9, padding:"11px 14px", color:C.text, fontSize:14, fontFamily:F.body, outline:"none" };
-  const lbl = { display:"block", fontSize:11, color:C.textMuted, marginBottom:5, fontFamily:F.mono, textTransform:"uppercase", letterSpacing:"0.06em" };
+
+  const submit = () => {
+    if (!form.email || !form.password) {
+      setErr("Please fill in all required fields.");
+      return;
+    }
+
+    if (mode === "register") {
+      if (!form.name) return setErr("Name is required.");
+      if (form.password !== form.confirm) return setErr("Passwords do not match.");
+      if (form.password.length < 6) return setErr("Min 6 characters for password.");
+    }
+
+    handleAuth({
+      name: form.name,
+      email: form.email,
+      password: form.password,
+      isLogin: mode === "login"
+    });
+  };
   return (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.8)", zIndex:300, backdropFilter:"blur(8px)" }} />
@@ -1175,7 +1222,7 @@ function DashboardPage({ user, wishlist, onRemoveWish, onGoElec }) {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/orders/my", {
+      const res = await fetch("https://techmart-hngi.onrender.com/api/orders/my", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -1637,7 +1684,7 @@ function AnalyticsPage() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/orders/my", {
+        const res = await fetch("https://techmart-hngi.onrender.com/api/orders/my", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -1791,7 +1838,7 @@ function OrderTrackingPage() {
       const clean = orderId.replace(/[#\s]/g, "").toUpperCase();
 
       const res = await fetch(
-        `http://localhost:5000/api/orders/track/${clean}`
+        `https://techmart-hngi.onrender.com/api/orders/track/${clean}`
       );
 
       const data = await res.json();
@@ -2158,7 +2205,7 @@ const handleSubmit = async () => {
   if (!ok) return;
 
   try {
-    const response = await fetch("http://localhost:5000/api/contact", {
+    const response = await fetch("https://techmart-hngi.onrender.com/api/contact", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
