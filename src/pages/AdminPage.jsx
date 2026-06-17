@@ -14,37 +14,50 @@ export default function AdminPage({ C, F }) {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [page, setPage] = useState("admin");
 
-  const login = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("https://techmart-9ajn.onrender.com/api/admin/login", {
+const login = async () => {
+  setLoading(true);
+
+  try {
+    const res = await fetch(
+  "https://techmart-hngi.onrender.com/api/admin/login",
+      {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      const result = await res.json();
-    if (result.success) {
-  console.log("LOGIN TOKEN:", result.token);
-
-  localStorage.setItem("adminToken", result.token);
-
-  console.log(
-    "STORED TOKEN:",
-    localStorage.getItem("adminToken")
-  );
-
-  setToken(result.token);
-
-  setLoggedIn(true);
-} else {
-        alert(result.message);
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+        }),
       }
-    } catch (err) {
-      alert("Login failed: " + err.message);
-    } finally {
-      setLoading(false);
+    );
+
+    console.log("STATUS:", res.status);
+
+    const result = await res.json();
+
+    console.log("RESULT:", result);
+
+    if (result.success) {
+      localStorage.setItem("adminToken", result.token);
+
+      console.log(
+        "TOKEN AFTER SAVE:",
+        localStorage.getItem("adminToken")
+      );
+
+      setToken(result.token);
+      setLoggedIn(true);
+    } else {
+      alert(result.message);
     }
-  };
+  } catch (err) {
+    console.log(err);
+    alert(err.message);
+  }
+
+  setLoading(false);
+};
 
 const loadDashboard = async () => {
   setDashLoading(true);
@@ -55,7 +68,7 @@ const loadDashboard = async () => {
     );
 
     const res = await fetch(
-      "https://techmart-9ajn.onrender.com/api/admin/dashboard",
+      "https://techmart-hngi.onrender.com/api/admin/dashboard",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
@@ -94,7 +107,7 @@ useEffect(() => {
 
 
 const deleteProduct = async (id) => {
-  await fetch(`https://techmart-9ajn.onrender.com/api/admin/products/${id}`, {
+  await fetch(`https://techmart-hngi.onrender.com/api/admin/products/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("adminToken")}`
@@ -173,7 +186,7 @@ const deleteProduct = async (id) => {
 );
 const updateOrder = async (id, status) => {
   try {
-    const res = await fetch(`https://techmart-9ajn.onrender.com/api/admin/orders/${id}`, {
+    const res = await fetch(`https://techmart-hngi.onrender.com/api/admin/orders/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -204,7 +217,7 @@ const editProduct = async (p) => {
 
   try {
     const res = await fetch(
-      `https://techmart-9ajn.onrender.com/api/admin/products/${p.id}`,
+      `https://techmart-hngi.onrender.com/api/admin/products/${p.id}`,
       {
         method: "PUT",
         headers: {
