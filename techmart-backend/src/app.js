@@ -14,6 +14,15 @@ app.get("/", (req, res) => {
     version: "1.0.0",
   });
 });
+const cors = require("cors");
+
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://techmart-sable.vercel.app"
+  ],
+  credentials: true
+}));
 
 // Routes
 const authRoutes = require("./routes/auth");
@@ -27,7 +36,7 @@ const paymentRoutes = require("./routes/payment");
 const analyticsRoutes = require("./routes/analytics");
 const trackOrderRoutes = require("./routes/TrackOrder");
 const ordersUserRoutes = require("./routes/orders.user");
-const AdminRoutes = require("./routes/Admin");
+const adminRoutes = require("./routes/admin");
 
 
 app.use("/api/auth", authRoutes);
@@ -41,7 +50,7 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", require("./routes/orders.user"));
-app.use("/api/Admin", AdminRoutes);
+app.use("/api/admin", adminRoutes);
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);

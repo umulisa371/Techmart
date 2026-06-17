@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "TechMart Rwanda E-Commerce API",
   "main": "src/app.js",
- "scripts": {
-  "start": "node src/app.js",
-  "dev": "nodemon src/app.js",
-  "postinstall": "npx prisma generate"
-},
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "postinstall": "npx prisma generate"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
