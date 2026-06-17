@@ -27,7 +27,7 @@ const paymentRoutes = require("./routes/payment");
 const analyticsRoutes = require("./routes/analytics");
 const trackOrderRoutes = require("./routes/TrackOrder");
 const ordersUserRoutes = require("./routes/orders.user");
-const adminRoutes = require("./routes/admin");
+const AdminRoutes = require("./routes/Admin");
 
 
 app.use("/api/auth", authRoutes);
@@ -41,7 +41,7 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/payment", paymentRoutes);
 app.use("/api/orders", require("./routes/orders.user"));
-app.use("/api/admin", adminRoutes);
+app.use("/api/Admin", AdminRoutes);
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);

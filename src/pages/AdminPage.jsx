@@ -17,7 +17,7 @@ export default function AdminPage({ C, F }) {
   const login = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/api/admin/login", {
+      const res = await fetch("https://techmart-9ajn.onrender.com/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -55,7 +55,7 @@ const loadDashboard = async () => {
     );
 
     const res = await fetch(
-      "http://localhost:5000/api/admin/dashboard",
+      "https://techmart-9ajn.onrender.com/api/admin/dashboard",
       {
         headers: {
           Authorization: `Bearer ${localStorage.getItem(
@@ -94,7 +94,7 @@ useEffect(() => {
 
 
 const deleteProduct = async (id) => {
-  await fetch(`http://localhost:5000/api/admin/products/${id}`, {
+  await fetch(`https://techmart-9ajn.onrender.com/api/admin/products/${id}`, {
     method: "DELETE",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("adminToken")}`
@@ -173,7 +173,7 @@ const deleteProduct = async (id) => {
 );
 const updateOrder = async (id, status) => {
   try {
-    const res = await fetch(`http://localhost:5000/api/admin/orders/${id}`, {
+    const res = await fetch(`https://techmart-9ajn.onrender.com/api/admin/orders/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -204,7 +204,7 @@ const editProduct = async (p) => {
 
   try {
     const res = await fetch(
-      `http://localhost:5000/api/admin/products/${p.id}`,
+      `https://techmart-9ajn.onrender.com/api/admin/products/${p.id}`,
       {
         method: "PUT",
         headers: {
