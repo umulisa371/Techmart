@@ -1123,62 +1123,7 @@ function AuthPage({ onAuth, onClose }) {
   const set = (k,v) => setForm(p => ({ ...p, [k]: v }));
 
   // ✅ PUT THIS FIRST
-  const handleAuth = async (data) => {
-    try {
-      const url = data.isLogin
-        ? "https://techmart-hngi.onrender.com/api/auth/login"
-        : "https://techmart-hngi.onrender.com/api/auth/register";
-
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
-
-      const text = await res.text();
-
-      let result;
-      try {
-        result = JSON.parse(text);
-      } catch {
-        console.log("NOT JSON RESPONSE:", text);
-        throw new Error("Server returned HTML instead of JSON");
-      }
-
-      if (!res.ok) {
-        throw new Error(result.error || "Auth failed");
-      }
-
-      console.log("AUTH SUCCESS:", result);
-      setErr("");
-      return result;
-
-    } catch (err) {
-      console.error("AUTH ERROR:", err.message);
-      setErr(err.message);
-    }
-  };
-
-  const submit = () => {
-    if (!form.email || !form.password) {
-      setErr("Please fill in all required fields.");
-      return;
-    }
-
-    if (mode === "register") {
-      if (!form.name) return setErr("Name is required.");
-      if (form.password !== form.confirm) return setErr("Passwords do not match.");
-      if (form.password.length < 6) return setErr("Min 6 characters for password.");
-    }
-
-    handleAuth({
-      name: form.name,
-      email: form.email,
-      password: form.password,
-      isLogin: mode === "login"
-    });
-  };
-  return (
+ turn (
     <>
       <div onClick={onClose} style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.8)", zIndex:300, backdropFilter:"blur(8px)" }} />
       <div style={{ position:"fixed", top:"50%", left:"50%", transform:"translate(-50%,-50%)", background:C.card, border:`1px solid ${C.border}`, borderRadius:22, padding:"36px 32px", zIndex:301, width:"min(440px,94vw)", boxShadow:"0 40px 100px rgba(0,0,0,0.8)" }}>
