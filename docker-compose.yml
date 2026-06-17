@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: techmart_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: techmart2025
+      POSTGRES_DB: techmart
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build: .
+    container_name: techmart_api
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://postgres:techmart2025@db:5432/techmart
+      JWT_SECRET: techmart_rwanda_secret_2025
+      PORT: 5000
+      FRONTEND_URL: http://localhost:5173
+    depends_on:
+      - db
+    command: >
+      sh -c "npx prisma db push && node prisma/seed.js && npm start"
+
+volumes:
+  pgdata:
