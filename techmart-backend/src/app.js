@@ -4,25 +4,16 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors({ origin: process.env.FRONTEND_URL || "*" }));
-app.use(express.json());
-
-// Health check
-app.get("/", (req, res) => {
-  res.json({
-    status: "TechMart API running 🚀",
-    version: "1.0.0",
-  });
-});
-const cors = require("cors");
-
 app.use(cors({
   origin: [
     "http://localhost:5173",
     "https://techmart-sable.vercel.app"
   ],
-  credentials: true
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
 }));
+
+app.use(express.json());
 
 // Routes
 const authRoutes = require("./routes/auth");
